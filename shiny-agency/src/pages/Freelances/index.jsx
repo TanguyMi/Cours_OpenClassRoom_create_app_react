@@ -47,17 +47,31 @@ function Freelances() {
 
       const [surveyData, setSurveyData] = useState([]);
       const [isDataLoading, setDataLoading] = useState(false);
+
+      // const [error, setError] = useState(false);
+      // const [freelancersList, setFreelancesList] = useState([]);
       // useEffect(() => {
-      //       // fetchData()
-      //       setDataLoading(true);
-      //       fetch(`http://localhost:8000/freelances`).then((response) =>
-      //             response.json().then(({ freelancesData }) => {
-      //                   setFreelancesData(freelancesData);
+      //       async function fetchFreelances() {
+      //             setDataLoading(true);
+      //             try {
+      //                   const response = await fetch(`http://localhost:8000/freelances`);
+      //                   const { freelancersList } = await response.json();
+      //                   setFreelancesList(freelancersList);
+      //             } catch (err) {
+      //                   console.log('===== error =====', err);
+      //                   setError(true);
+      //             } finally {
       //                   setDataLoading(false);
-      //                   console.log(response);
-      //             })
-      //       );
+      //             }
+      //       }
+      //
+      //       fetchFreelances();
       // }, []);
+      //
+      // if (error) {
+      //       return <span>Oups il y a eu un problème</span>;
+      // }
+
       useEffect(() => {
             // fetchData()
             setDataLoading(true);
