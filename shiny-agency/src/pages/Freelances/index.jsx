@@ -1,8 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Card from '../../components/Card';
 import styled from 'styled-components';
 import colors from '../../utils/style/color';
 import { Loader } from '../../utils/style/atoms';
+import { SurveyContext } from '../../utils/context';
+import { useFetch, useTheme } from '../../utils/hooks';
 
 const CardsContainer = styled.div`
   display: grid;
@@ -43,10 +45,29 @@ const freelanceProfiles = [
       }
 ];
 
+const LoaderWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
 function Freelances() {
 
-      const [surveyData, setSurveyData] = useState([]);
-      const [isDataLoading, setDataLoading] = useState(false);
+      // const [surveyData, setSurveyData] = useState([]);
+      // const [isDataLoading, setDataLoading] = useState(false);
+
+      const { theme } = useTheme();
+      const { data, isLoading, error } = useFetch(
+            `http://localhost:8000/freelances`
+      );
+
+      // Ici le "?" permet de s'assurer que data existe bien.
+      // Vous pouvez en apprendre davantage sur cette notation ici :
+      // https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Operators/Optional_chaining
+      const freelancersList = data?.freelancersList;
+
+      if (error) {
+            return <span>Oups il y a eu un problème</span>;
+      }
 
       // const [error, setError] = useState(false);
       // const [freelancersList, setFreelancesList] = useState([]);
@@ -72,38 +93,38 @@ function Freelances() {
       //       return <span>Oups il y a eu un problème</span>;
       // }
 
-      useEffect(() => {
-            // fetchData()
-            setDataLoading(true);
-            fetch(`http://localhost:8000/freelances`).then((response) =>
-                  response.json().then(({ freelancersList }) => {
-                        setSurveyData(freelancersList);
-                        setDataLoading(false);
-                        console.log(freelancersList);
-                  })
-            );
-      }, []);
+      // useEffect(() => {
+      //       // fetchData()
+      //       setDataLoading(true);
+      //       fetch(`http://localhost:8000/freelances`).then((response) =>
+      //             response.json().then(({ freelancersList }) => {
+      //                   setSurveyData(freelancersList);
+      //                   setDataLoading(false);
+      //                   console.log(freelancersList);
+      //             })
+      //       );
+      // }, []);
       return (
             <div>
-                  <PageTitle>Trouvez votre prestataire</PageTitle>
-                  <PageSubtitle>
+                  <PageTitle theme={theme}>Trouvez votre prestataire</PageTitle>
+                  <PageSubtitle theme={theme}>
                         Chez Shiny nous réunissons les meilleurs profils pour vous.
                   </PageSubtitle>
-                  {isDataLoading ? (
-                        <Loader />
+                  {isLoading ? (
+                        <LoaderWrapper>
+                              <Loader theme={theme} />
+                        </LoaderWrapper>
                   ) : (
                         <CardsContainer>
-
-                              {surveyData.map((profile, index) => (
+                              {freelancersList.map((profile, index) => (
                                     <Card
                                           key={`${profile.name}-${index}`}
-                                          label={profile.jobTitle}
+                                          label={profile.job}
                                           title={profile.name}
                                           picture={profile.picture}
                                     />
                               ))}
                         </CardsContainer>
-
                   )}
             </div>
       );
