@@ -5,6 +5,7 @@ import colors from '../../utils/style/color';
 import { Loader } from '../../utils/style/atoms';
 import { SurveyContext } from '../../utils/context';
 import { useFetch, useTheme } from '../../utils/hooks';
+import { Link } from 'react-router-dom';
 
 const CardsContainer = styled.div`
   display: grid;
@@ -117,12 +118,14 @@ function Freelances() {
                   ) : (
                         <CardsContainer>
                               {freelancersList.map((profile, index) => (
-                                    <Card
-                                          key={`${profile.name}-${index}`}
-                                          label={profile.job}
-                                          title={profile.name}
-                                          picture={profile.picture}
-                                    />
+                                    <Link key={`freelance-${profile.id}`} to={`/profile/${profile.id}`}>
+                                          <Card
+                                                label={profile.job}
+                                                title={profile.name}
+                                                picture={profile.picture}
+                                                theme={theme}
+                                          />
+                                    </Link>
                               ))}
                         </CardsContainer>
                   )}

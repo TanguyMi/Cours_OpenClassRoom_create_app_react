@@ -1,61 +1,56 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { Component, useState } from 'react';
 import styled from 'styled-components';
 import colors from '../../utils/style/color';
 import { useTheme } from '../../utils/hooks';
 import DefaultPicture from '../../assets/profile.jpeg';
+import { CardWrapper, CardLabel, CardImage, CardTitle } from './style';
 
-const CardLabel = styled.span`
-  color: #5843e4;
-  font-size: 22px;
-  font-weight: normal;
-  padding-left: 15px;
-`;
+// function Card({ label, title, picture }) {
+//       const { theme } = useTheme();
+//       const [isFavorite, setIsFavorite] = useState(false);
+//       const star = isFavorite ? '⭐️' : '';
+//
+//       return (
+//             <CardWrapper theme={theme} onClick={() => setIsFavorite(!isFavorite)}>
+//                   <CardLabel theme={theme}>{label}</CardLabel>
+//                   <CardImage src={picture} alt='freelance' />
+//                   <CardTitle theme={theme}>
+//                         {star} {title} {star}
+//                   </CardTitle>
+//             </CardWrapper>
+//       );
+// }
 
-const CardTitle = styled.span`
-  color: black;
-  font-size: 22px;
-  font-weight: normal;
-  align-self: center;
-`;
+//// OLD VERSION WITH CLASS
 
-const CardImage = styled.img`
-  height: 150px;
-  width: 150px;
-  align-self: center;
-  border-radius: 50%;
-`;
+class Card extends Component {
+      constructor(props) {
+            super(props);
+            this.updateInputValue = this.setIsFavorite.bind(this);
+            this.state = {
+                  isFavorite: false
+            };
+      }
 
-const CardWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  padding: 15px;
-  background-color: ${colors.backgroundLight};
-  border-radius: 30px;
-  width: 300px;
-  height: 300px;
-  transition: 200ms;
-  &:hover {
-    cursor: pointer;
-    box-shadow: 2px 2px 10px #e2e3e9;
-  }
-`;
+      setIsFavorite() {
+            this.setState({ isFavorite: !this.state.isFavorite });
+      }
 
-function Card({ label, title, picture }) {
-      const { theme } = useTheme();
-      const [isFavorite, setIsFavorite] = useState(false);
-      const star = isFavorite ? '⭐️' : '';
-
-      return (
-            <CardWrapper theme={theme} onClick={() => setIsFavorite(!isFavorite)}>
-                  <CardLabel theme={theme}>{label}</CardLabel>
-                  <CardImage src={picture} alt='freelance' />
-                  <CardTitle theme={theme}>
-                        {star} {title} {star}
-                  </CardTitle>
-            </CardWrapper>
-      );
+      render() {
+            const { theme, label, picture, title } = this.props;
+            const { isFavorite } = this.state;
+            const star = isFavorite ? '⭐️' : '';
+            return (
+                  <CardWrapper theme={theme} onClick={(e) => this.setIsFavorite()}>
+                        <CardLabel theme={theme}>{label}</CardLabel>
+                        <CardImage src={picture} alt='freelance' />
+                        <CardTitle theme={theme}>
+                              {star} {title} {star}
+                        </CardTitle>
+                  </CardWrapper>
+            );
+      }
 }
 
 Card.propTypes = {
